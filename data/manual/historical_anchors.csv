@@ -1,0 +1,5 @@
+year,month,item,product_id,price_value,unit,source_document,page_reference,notes
+1970,,Sheep meat,MEAT-SHEEP,7.80,MAD/kg,FAO Small Ruminants in the Near East 1987,Chapter 5,Also confirmed by INRA Morocco
+1970,,Sheep meat,MEAT-SHEEP,8.00,MAD/kg,INRA L'elevage du mouton au Maroc,,Upper bound estimate
+1985,,Sheep meat,MEAT-SHEEP,32.00,MAD/kg,FAO Small Ruminants in the Near East 1987,Chapter 5,
+1998,,Sheep meat,MEAT-SHEEP,51.25,MAD/kg,INRA L'elevage du mouton au Maroc,,Confirmed by FAOSTAT 1998 value

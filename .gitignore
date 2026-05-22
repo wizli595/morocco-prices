@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Data (raw and intermediate — reproducible via pipeline)
+data/bronze/
+data/silver/
+data/warehouse/
+data/checkpoints/
+
+# Gold layer Parquet is gitignored (large binary)
+# Gold CSV + data dictionary are committed for distribution
+data/gold/*.parquet
+
+# Logs
+logs/
+*.log
+
+# Spark
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Airflow
+airflow.db
+airflow.cfg
+webserver_config.py
+
+# Great Expectations
+great_expectations/uncommitted/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
