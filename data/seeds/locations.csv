@@ -1,0 +1,36 @@
+location_id,country,region,province,city,market,level,latitude,longitude
+MA-NATIONAL,Morocco,,,,,national,31.7917,-7.0926
+MA-R01,Morocco,Tanger-Tetouan-Al Hoceima,,,,regional,35.5889,-5.3626
+MA-R02,Morocco,L'Oriental,,,,regional,34.6805,-1.9076
+MA-R03,Morocco,Fes-Meknes,,,,regional,34.0181,-4.9998
+MA-R04,Morocco,Rabat-Sale-Kenitra,,,,regional,34.0209,-6.8416
+MA-R05,Morocco,Beni Mellal-Khenifra,,,,regional,32.3373,-6.3498
+MA-R06,Morocco,Casablanca-Settat,,,,regional,33.5731,-7.5898
+MA-R07,Morocco,Marrakech-Safi,,,,regional,31.6295,-8.0083
+MA-R08,Morocco,Draa-Tafilalet,,,,regional,31.9314,-4.4253
+MA-R09,Morocco,Souss-Massa,,,,regional,30.4278,-9.5981
+MA-R10,Morocco,Guelmim-Oued Noun,,,,regional,28.9833,-10.0573
+MA-R11,Morocco,Laayoune-Sakia El Hamra,,,,regional,27.1536,-13.2033
+MA-R12,Morocco,Dakhla-Oued Ed-Dahab,,,,regional,23.6848,-15.9570
+MA-CAS,Morocco,Casablanca-Settat,,Casablanca,,city,33.5731,-7.5898
+MA-RAB,Morocco,Rabat-Sale-Kenitra,,Rabat,,city,34.0209,-6.8416
+MA-FES,Morocco,Fes-Meknes,,Fes,,city,34.0181,-4.9998
+MA-MAR,Morocco,Marrakech-Safi,,Marrakech,,city,31.6295,-8.0083
+MA-TNG,Morocco,Tanger-Tetouan-Al Hoceima,,Tanger,,city,35.7595,-5.8340
+MA-AGA,Morocco,Souss-Massa,,Agadir,,city,30.4278,-9.5981
+MA-OUJ,Morocco,L'Oriental,,Oujda,,city,34.6805,-1.9076
+MA-MEK,Morocco,Fes-Meknes,,Meknes,,city,33.8935,-5.5473
+MA-KEN,Morocco,Rabat-Sale-Kenitra,,Kenitra,,city,34.2610,-6.5802
+MA-TET,Morocco,Tanger-Tetouan-Al Hoceima,,Tetouan,,city,35.5785,-5.3684
+MA-SAF,Morocco,Marrakech-Safi,,Safi,,city,32.2994,-9.2372
+MA-SET,Morocco,Casablanca-Settat,,Settat,,city,33.0011,-7.6166
+MA-BEN,Morocco,Beni Mellal-Khenifra,,Beni Mellal,,city,32.3373,-6.3498
+MA-ERR,Morocco,Draa-Tafilalet,,Errachidia,,city,31.9314,-4.4253
+MA-HOC,Morocco,Tanger-Tetouan-Al Hoceima,,Al Hoceima,,city,35.2517,-3.9372
+MA-LAA,Morocco,Laayoune-Sakia El Hamra,,Laayoune,,city,27.1536,-13.2033
+MA-DAK,Morocco,Dakhla-Oued Ed-Dahab,,Dakhla,,city,23.6848,-15.9570
+MA-GUE,Morocco,Guelmim-Oued Noun,,Guelmim,,city,28.9833,-10.0573
+MA-SAL,Morocco,Rabat-Sale-Kenitra,,Sale,,city,34.0531,-6.7986
+MA-MOH,Morocco,Casablanca-Settat,,Mohammedia,,city,33.6866,-7.3830
+MA-ELJ,Morocco,Casablanca-Settat,,El Jadida,,city,33.2316,-8.5007
+MA-NAD,Morocco,Casablanca-Settat,,Nador,,city,35.1688,-2.9287

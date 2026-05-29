@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "name": "RawFaostat",
+  "namespace": "ma.maprix.raw",
+  "fields": [
+    {"name": "area_code", "type": "int"},
+    {"name": "area", "type": "string"},
+    {"name": "item_code", "type": "int"},
+    {"name": "item", "type": "string"},
+    {"name": "element_code", "type": "int"},
+    {"name": "element", "type": "string"},
+    {"name": "year", "type": "int"},
+    {"name": "value", "type": ["null", "double"]},
+    {"name": "unit", "type": "string"},
+    {"name": "flag", "type": ["null", "string"]},
+    {"name": "note", "type": ["null", "string"]},
+    {"name": "source_file", "type": "string"},
+    {"name": "ingested_at", "type": "string"},
+    {"name": "pipeline_run_id", "type": "string"}
+  ]
+}

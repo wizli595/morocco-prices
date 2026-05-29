@@ -1,0 +1,12 @@
+source_id,source_name,organization,source_type,reliability,url,language,update_frequency,priority_rank
+WORLDBANK,World Bank Open Data,World Bank,api,institutional,https://data.worldbank.org,en,annual,3
+FAOSTAT,FAOSTAT Producer Prices,FAO,bulk_file,institutional,https://www.fao.org/faostat,en,annual,2
+HCP,Indice des Prix a la Consommation,Haut-Commissariat au Plan,bulk_file,official,https://www.hcp.ma,fr,monthly,1
+WFP,WFP Food Prices,World Food Programme,bulk_file,institutional,https://data.humdata.org,en,monthly,4
+IMF,IMF CPI Dataset,International Monetary Fund,api,institutional,https://data.imf.org,en,annual,3
+MEDIAS24,Medias24 Price Reports,Medias24,scrape,journalistic,https://medias24.com,fr,weekly,6
+HESPRESS,Hespress Price Articles,Hespress,scrape,journalistic,https://fr.hespress.com,fr,irregular,6
+LE360,Le360 Price Articles,Le360,scrape,journalistic,https://fr.le360.ma,fr,irregular,6
+SELINA,Selina Wamucii Trade Prices,Selina Wamucii,scrape,commercial,https://www.selinawamucii.com,en,annual,5
+MANUAL,Historical Archives,Multiple,manual,academic,,fr,once,7
+BAM,Bank Al-Maghrib Statistics,Bank Al-Maghrib,bulk_file,official,https://www.bkam.ma,fr,quarterly,1

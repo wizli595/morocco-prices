@@ -1,0 +1,17 @@
+{
+  "type": "record",
+  "name": "RawHcp",
+  "namespace": "ma.maprix.raw",
+  "fields": [
+    {"name": "city", "type": "string"},
+    {"name": "division_code", "type": ["null", "string"]},
+    {"name": "division", "type": "string"},
+    {"name": "index_value", "type": "double"},
+    {"name": "base_year", "type": "int"},
+    {"name": "month", "type": "int"},
+    {"name": "year", "type": "int"},
+    {"name": "raw_filename", "type": "string"},
+    {"name": "ingested_at", "type": "string"},
+    {"name": "pipeline_run_id", "type": "string"}
+  ]
+}

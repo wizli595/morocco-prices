@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "RawManual",
+  "namespace": "ma.maprix.raw",
+  "fields": [
+    {"name": "year", "type": "int"},
+    {"name": "month", "type": ["null", "int"]},
+    {"name": "item", "type": "string"},
+    {"name": "product_id", "type": "string"},
+    {"name": "price_value", "type": "double"},
+    {"name": "price_unit", "type": "string"},
+    {"name": "source_document", "type": "string"},
+    {"name": "page_reference", "type": ["null", "string"]},
+    {"name": "notes", "type": ["null", "string"]},
+    {"name": "entered_by", "type": "string", "default": "system"},
+    {"name": "pipeline_run_id", "type": "string"}
+  ]
+}

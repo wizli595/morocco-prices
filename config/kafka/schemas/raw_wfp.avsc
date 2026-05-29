@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "RawWfp",
+  "namespace": "ma.maprix.raw",
+  "fields": [
+    {"name": "country", "type": "string"},
+    {"name": "adm1", "type": ["null", "string"]},
+    {"name": "market", "type": ["null", "string"]},
+    {"name": "commodity", "type": "string"},
+    {"name": "year", "type": "int"},
+    {"name": "month", "type": "int"},
+    {"name": "price", "type": ["null", "double"]},
+    {"name": "currency", "type": "string"},
+    {"name": "unit", "type": "string"},
+    {"name": "source", "type": "string"},
+    {"name": "ingested_at", "type": "string"},
+    {"name": "pipeline_run_id", "type": "string"}
+  ]
+}

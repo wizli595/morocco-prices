@@ -1,0 +1,16 @@
+{
+  "type": "record",
+  "name": "RawWorldBank",
+  "namespace": "ma.maprix.raw",
+  "fields": [
+    {"name": "area_code", "type": "string"},
+    {"name": "indicator_code", "type": "string"},
+    {"name": "indicator_name", "type": "string"},
+    {"name": "year", "type": "int"},
+    {"name": "value", "type": ["null", "double"]},
+    {"name": "decimal", "type": "int", "default": 0},
+    {"name": "source_file", "type": "string"},
+    {"name": "ingested_at", "type": "string"},
+    {"name": "pipeline_run_id", "type": "string"}
+  ]
+}

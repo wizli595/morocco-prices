@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "name": "RawNews",
+  "namespace": "ma.maprix.raw",
+  "fields": [
+    {"name": "url", "type": "string"},
+    {"name": "source_name", "type": "string"},
+    {"name": "publish_date", "type": ["null", "string"]},
+    {"name": "headline", "type": ["null", "string"]},
+    {"name": "excerpt", "type": ["null", "string"]},
+    {"name": "price_text", "type": ["null", "string"]},
+    {"name": "price_min", "type": ["null", "double"]},
+    {"name": "price_max", "type": ["null", "double"]},
+    {"name": "item_mentioned", "type": ["null", "string"]},
+    {"name": "unit_mentioned", "type": ["null", "string"]},
+    {"name": "city_mentioned", "type": ["null", "string"]},
+    {"name": "language", "type": "string"},
+    {"name": "scraped_at", "type": "string"},
+    {"name": "pipeline_run_id", "type": "string"}
+  ]
+}
