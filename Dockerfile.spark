@@ -1,0 +1,25 @@
+FROM apache/spark:3.5.6-java17
+
+USER root
+
+ENV DELTA_VERSION=3.1.0
+ENV SCALA_VERSION=2.12
+ENV POSTGRES_JDBC_VERSION=42.7.3
+ENV SPARK_JARS=/opt/spark/jars
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Delta Lake + PostgreSQL JDBC jars
+RUN curl -fSL "https://repo1.maven.org/maven2/io/delta/delta-spark_${SCALA_VERSION}/${DELTA_VERSION}/delta-spark_${SCALA_VERSION}-${DELTA_VERSION}.jar" \
+        -o ${SPARK_JARS}/delta-spark.jar \
+    && curl -fSL "https://repo1.maven.org/maven2/io/delta/delta-storage/${DELTA_VERSION}/delta-storage-${DELTA_VERSION}.jar" \
+        -o ${SPARK_JARS}/delta-storage.jar \
+    && curl -fSL "https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRES_JDBC_VERSION}/postgresql-${POSTGRES_JDBC_VERSION}.jar" \
+        -o ${SPARK_JARS}/postgresql-jdbc.jar
+
+COPY src/ /app/src/
+ENV PYTHONPATH=/app
+
+USER spark
