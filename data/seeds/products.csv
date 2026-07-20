@@ -160,3 +160,4 @@ EXPORT-PHOSPHATE,Exports,Minerals,Phosphate,,Phosphate rock,Phosphate,فوسفا
 EXPORT-CANNED-SARDINE,Exports,Processed,Canned Sardines,,Canned sardines export,Sardines en conserve export,سردين معلب تصدير,USD/tonne,false,false,,
 CPI-NATIONAL,Indices,CPI,Consumer Price Index,National,National CPI,Indice des prix a la consommation,مؤشر أسعار الاستهلاك,index_point,false,false,,
 CPI-FOOD,Indices,CPI,Food Price Index,National,Food CPI,IPC Alimentation,مؤشر أسعار الغذاء,index_point,false,false,,
+INFLATION-NATIONAL,Indices,CPI,Inflation Rate,National,National Inflation Rate,Taux d'inflation,معدل التضخم,percent,false,false,,

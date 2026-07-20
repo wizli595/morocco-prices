@@ -1,8 +1,11 @@
 """Run all transformers on existing data and enrich fact_prices."""
 
+from typing import Any
+
 import structlog
 
 from scripts.db import get_connection
+from src.core.models.errors import UnsupportedConversion
 from src.core.transformers.currency_converter import mad_to_usd, usd_to_mad
 from src.core.transformers.inflation_adjuster import adjust_to_real, load_cpi_from_rows
 from src.core.transformers.unit_normalizer import is_index_unit, normalize_unit
@@ -25,10 +28,17 @@ def run() -> None:
     enriched = 0
 
     for row in prices:
-        mad, usd, real = _enrich_row(row)
-        update_enriched_price(
-            cur, row["observation_id"], mad, usd, real,
-        )
+        try:
+            mad, usd, real = _enrich_row(row)
+        except UnsupportedConversion as exc:
+            logger.warning(
+                "processing.unit_unsupported",
+                observation_id=row["observation_id"],
+                from_unit=exc.from_val,
+                to_unit=exc.to_val,
+            )
+            continue
+        update_enriched_price(cur, row["observation_id"], mad, usd, real)
         enriched += 1
 
     conn.commit()
@@ -37,7 +47,7 @@ def run() -> None:
     logger.info("processing.complete", enriched=enriched)
 
 
-def _enrich_row(row: dict) -> tuple[float | None, float | None, float | None]:
+def _enrich_row(row: dict[str, Any]) -> tuple[float | None, float | None, float | None]:
     """Compute price_mad, price_usd, price_real_mad for one row."""
     value = row["original_value"]
     unit = row["original_unit"]
@@ -55,10 +65,13 @@ def _enrich_row(row: dict) -> tuple[float | None, float | None, float | None]:
 
 
 def _to_mad(
-    value: float, unit: str, currency: str, year: int,
+    value: float,
+    unit: str,
+    currency: str,
+    year: int,
 ) -> float | None:
-    """Convert any value to MAD in canonical unit."""
-    if currency == "MAD" or currency == "index":
+    """Convert a market value to MAD in the canonical unit."""
+    if currency == "MAD":
         normalized, _ = normalize_unit(value, unit, "MAD/kg")
         return normalized
     if currency == "USD":

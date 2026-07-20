@@ -1,5 +1,8 @@
 """Tests for unit normalizer."""
 
+import pytest
+
+from src.core.models.errors import UnsupportedConversion
 from src.core.transformers.unit_normalizer import (
     canonical_unit_for,
     is_index_unit,
@@ -14,14 +17,13 @@ def test_tonne_to_kg():
 
 
 def test_same_unit_noop():
-    val, unit = normalize_unit(90.0, "MAD/kg", "MAD/kg")
+    val, _ = normalize_unit(90.0, "MAD/kg", "MAD/kg")
     assert val == 90.0
 
 
-def test_unknown_conversion_returns_original():
-    val, unit = normalize_unit(100, "MAD/barrel", "MAD/kg")
-    assert val == 100
-    assert unit == "MAD/barrel"
+def test_unknown_conversion_raises():
+    with pytest.raises(UnsupportedConversion):
+        normalize_unit(100, "MAD/barrel", "MAD/kg")
 
 
 def test_is_index_unit_true():

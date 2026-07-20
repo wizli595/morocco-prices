@@ -1,5 +1,7 @@
 """Normalize units to canonical form (MAD/kg, MAD/L, etc.)."""
 
+from src.core.models.errors import UnsupportedConversion
+
 CONVERSION_FACTORS: dict[tuple[str, str], float] = {
     ("MAD/tonne", "MAD/kg"): 0.001,
     ("USD/tonne", "USD/kg"): 0.001,
@@ -19,10 +21,9 @@ def normalize_unit(
     if from_unit == to_unit:
         return value, to_unit
 
-    key = (from_unit, to_unit)
-    factor = CONVERSION_FACTORS.get(key)
+    factor = CONVERSION_FACTORS.get((from_unit, to_unit))
     if factor is None:
-        return value, from_unit
+        raise UnsupportedConversion(from_unit, to_unit)
 
     return value * factor, to_unit
 
@@ -34,7 +35,7 @@ def is_index_unit(unit: str) -> bool:
 
 def canonical_unit_for(unit: str) -> str:
     """Find the canonical target unit for a given source unit."""
-    for (from_u, to_u) in CONVERSION_FACTORS:
+    for from_u, to_u in CONVERSION_FACTORS:
         if from_u == unit:
             return to_u
     return unit
