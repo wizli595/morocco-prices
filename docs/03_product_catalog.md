@@ -2,7 +2,7 @@
 
 ## Overview
 
-~500+ products across 18 categories. Covers everything tracked by Morocco's HCP CPI basket (478 articles), plus agricultural exports and livestock.
+~500+ products across 18 categories. Covers everything tracked by Morocco's HCP CPI basket (546 articles), plus agricultural exports and livestock.
 
 Products marked with **[S]** are subsidized by the Caisse de Compensation.
 Products marked with **[P]** are politically sensitive (price changes make headlines).
@@ -562,7 +562,7 @@ HOUSING-RENT-APT-1BR-CENTER    # 1BR apartment rent, city center
 
 ## HCP IPC Basket Alignment
 
-The HCP CPI basket (base 2017) contains **478 articles** across **1,391 product varieties**, organized into 12 COICOP divisions:
+The HCP CPI basket (base 2017) contains **546 articles** across **1,391 product varieties**, organized into 12 COICOP divisions:
 
 | Division | Name | Weight (%) | Our Coverage |
 |----------|------|-----------|-------------|
