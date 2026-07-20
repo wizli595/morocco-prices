@@ -1,6 +1,6 @@
 """Tests for the RawObservation model."""
 
-from src.core.models.observation import RawObservation, _build_time_key
+from src.core.models.observation import _build_time_key
 
 
 def test_build_time_key_annual():

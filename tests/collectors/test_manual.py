@@ -1,7 +1,7 @@
 """Tests for the Manual collector."""
 
 from src.collectors.manual import ManualCollector
-from src.core.models.enums import Confidence, CollectionMethod
+from src.core.models.enums import CollectionMethod, Confidence
 
 
 def test_manual_collects_historical_anchors():
@@ -19,8 +19,7 @@ def test_manual_sheep_1970():
     observations = collector.collect()
 
     sheep_1970 = [
-        o for o in observations
-        if o.product_id == "MEAT-SHEEP" and o.year == 1970
+        o for o in observations if o.product_id == "MEAT-SHEEP" and o.year == 1970
     ]
     assert len(sheep_1970) >= 1
     assert sheep_1970[0].value == 7.80

@@ -26,16 +26,22 @@ def seed_locations() -> int:
     cur = conn.cursor()
     count = 0
 
-    with open(SEED_PATH, encoding="utf-8") as f:
+    with SEED_PATH.open(encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            cur.execute(INSERT_SQL, (
-                row["location_id"], row["country"],
-                row["region"] or None, row["province"] or None,
-                row["city"] or None, row["market"] or None,
-                row["level"],
-                _parse_float(row["latitude"]),
-                _parse_float(row["longitude"]),
-            ))
+            cur.execute(
+                INSERT_SQL,
+                (
+                    row["location_id"],
+                    row["country"],
+                    row["region"] or None,
+                    row["province"] or None,
+                    row["city"] or None,
+                    row["market"] or None,
+                    row["level"],
+                    _parse_float(row["latitude"]),
+                    _parse_float(row["longitude"]),
+                ),
+            )
             count += 1
 
     conn.commit()

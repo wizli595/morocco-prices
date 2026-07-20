@@ -1,12 +1,12 @@
 """Run all seed scripts in order."""
 
-from scripts.seed_products import seed_products
-from scripts.seed_locations import seed_locations
-from scripts.seed_sources import seed_sources
 from scripts.generate_dim_time import main as generate_time
+from scripts.seed_locations import seed_locations
+from scripts.seed_products import seed_products
+from scripts.seed_sources import seed_sources
 
 
-def main():
+def main() -> None:
     """Seed all dimension tables."""
     print("=== Seeding all dimensions ===")
 

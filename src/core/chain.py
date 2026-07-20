@@ -1,5 +1,7 @@
 """Pipe-and-filter transform chain executor."""
 
+from typing import Any
+
 import structlog
 
 from src.core.ports.transformer import BaseTransformer
@@ -13,7 +15,7 @@ class TransformChain:
     def __init__(self, steps: list[BaseTransformer]) -> None:
         self._steps = steps
 
-    def execute(self, data: list) -> list:
+    def execute(self, data: list[Any]) -> list[Any]:
         """Run all steps in order, returning final result."""
         result = data
         for step in self._steps:

@@ -4,8 +4,8 @@ import structlog
 from confluent_kafka import Producer
 
 from src.adapters.kafka.avro_serde import serialize
-from src.core.ports.publisher import BasePublisher
 from src.core.models.observation import RawObservation
+from src.core.ports.publisher import BasePublisher
 
 logger = structlog.get_logger()
 
@@ -14,9 +14,11 @@ class KafkaPublisher(BasePublisher):
     """Publishes Avro-serialized observations to Kafka."""
 
     def __init__(self, bootstrap_servers: str) -> None:
-        self._producer = Producer({
-            "bootstrap.servers": bootstrap_servers,
-        })
+        self._producer = Producer(
+            {
+                "bootstrap.servers": bootstrap_servers,
+            }
+        )
 
     def publish(
         self,
@@ -41,7 +43,7 @@ class KafkaPublisher(BasePublisher):
             logger.warning("kafka.flush.incomplete", remaining=remaining)
 
 
-def _observation_to_dict(obs: RawObservation) -> dict:
+def _observation_to_dict(obs: RawObservation) -> dict[str, object]:
     """Convert observation to a flat dict for Avro."""
     return {
         "source_id": obs.source_id,

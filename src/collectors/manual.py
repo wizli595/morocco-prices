@@ -1,8 +1,9 @@
 """Manual collector for hand-entered historical price data."""
 
 import csv
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import structlog
 
@@ -35,7 +36,8 @@ class ManualCollector(BaseCollector):
             observations.extend(_parse_csv(csv_path))
         logger.info(
             "collector.fetch.complete",
-            source="MANUAL", records=len(observations),
+            source="MANUAL",
+            records=len(observations),
         )
         return observations
 
@@ -46,13 +48,13 @@ class ManualCollector(BaseCollector):
 def _parse_csv(path: Path) -> list[RawObservation]:
     """Parse one manual CSV into observations."""
     results: list[RawObservation] = []
-    with open(path, encoding="utf-8") as f:
+    with path.open(encoding="utf-8") as f:
         for row in csv.DictReader(f):
             results.append(_row_to_observation(row))
     return results
 
 
-def _row_to_observation(row: dict) -> RawObservation:
+def _row_to_observation(row: dict[str, Any]) -> RawObservation:
     """Convert one CSV row to RawObservation."""
     month = int(row["month"]) if row.get("month") else None
     return RawObservation(
@@ -70,7 +72,7 @@ def _row_to_observation(row: dict) -> RawObservation:
         confidence=Confidence.ESTIMATED,
         precision=Precision.APPROXIMATE,
         collection_method=CollectionMethod.MANUAL,
-        collected_at=datetime.now(tz=timezone.utc),
+        collected_at=datetime.now(tz=UTC),
         raw_metadata={
             "source_document": row.get("source_document", ""),
             "page_reference": row.get("page_reference", ""),

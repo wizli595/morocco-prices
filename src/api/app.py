@@ -11,7 +11,7 @@ def create_app() -> FastAPI:
         version="0.1.0",
     )
 
-    @app.get("/health")
+    @app.get("/health")  # type: ignore[untyped-decorator]
     def health() -> dict[str, str]:
         return {"status": "ok"}
 

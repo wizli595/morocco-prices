@@ -11,8 +11,12 @@ def test_no_outliers_in_normal_data():
 
 def test_detects_extreme_outlier():
     values = [
-        ("a", 10.0), ("b", 10.1), ("c", 10.2),
-        ("d", 10.0), ("e", 10.1), ("f", 500.0),
+        ("a", 10.0),
+        ("b", 10.1),
+        ("c", 10.2),
+        ("d", 10.0),
+        ("e", 10.1),
+        ("f", 500.0),
     ]
     results = flag_outliers(values, threshold=2.0)
     outliers = [r for r in results if r.is_outlier]

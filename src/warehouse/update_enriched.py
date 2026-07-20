@@ -19,6 +19,12 @@ def update_enriched_price(
     price_real_mad: float | None,
 ) -> None:
     """Update the normalized price columns for one observation."""
-    cur.execute(UPDATE_SQL, (
-        price_mad, price_usd, price_real_mad, observation_id,
-    ))
+    cur.execute(
+        UPDATE_SQL,
+        (
+            price_mad,
+            price_usd,
+            price_real_mad,
+            observation_id,
+        ),
+    )

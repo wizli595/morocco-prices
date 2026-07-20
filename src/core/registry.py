@@ -1,15 +1,15 @@
 """Plugin registry with decorator-based auto-registration."""
 
-from typing import TypeVar
+from collections.abc import Callable
 
 from src.core.ports.collector import BaseCollector
-
-T = TypeVar("T")
 
 _COLLECTOR_REGISTRY: dict[str, type[BaseCollector]] = {}
 
 
-def register_collector(source_id: str):
+def register_collector(
+    source_id: str,
+) -> Callable[[type[BaseCollector]], type[BaseCollector]]:
     """Decorator to register a collector class by source_id."""
 
     def decorator(cls: type[BaseCollector]) -> type[BaseCollector]:
