@@ -1,0 +1,7 @@
+product_id,year,usd_per_kg,source_note
+MEAT-SHEEP,2010,8.68,Selina Wamucii live-sheep export price (docs/sources/sheep_prices.md)
+MEAT-SHEEP,2014,8.90,Selina Wamucii live-sheep export price (docs/sources/sheep_prices.md)
+MEAT-SHEEP,2015,8.80,Selina Wamucii live-sheep export price (docs/sources/sheep_prices.md)
+MEAT-SHEEP,2016,8.90,Selina Wamucii live-sheep export price (docs/sources/sheep_prices.md)
+MEAT-SHEEP,2017,8.80,Selina Wamucii live-sheep export price (docs/sources/sheep_prices.md)
+MEAT-SHEEP,2018,8.90,Selina Wamucii live-sheep export price (docs/sources/sheep_prices.md)
