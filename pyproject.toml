@@ -65,7 +65,10 @@ dev = [
 
 [build-system]
 requires = ["setuptools>=69.0"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["src*", "scripts*"]
 
 [tool.ruff]
 line-length = 88
@@ -86,6 +89,9 @@ select = [
     "PTH",  # flake8-use-pathlib
     "RUF",  # ruff-specific
 ]
+# Project conventions: psycopg2 `cursor as PgCursor` alias (N812) and the
+# domain exception names shown in CLAUDE.md without an Error suffix (N818).
+ignore = ["N812", "N818"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["src"]
@@ -96,6 +102,8 @@ strict = true
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
+# Heavy optional deps (spark, kafka, airflow, great_expectations) ship no stubs.
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

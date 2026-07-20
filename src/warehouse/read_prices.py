@@ -1,5 +1,7 @@
 """Read price data from PostgreSQL for processing."""
 
+from typing import Any
+
 from psycopg2.extensions import cursor as PgCursor
 
 PRICES_SQL = """
@@ -25,14 +27,14 @@ CPI_SQL = """
 """
 
 
-def fetch_all_prices(cur: PgCursor) -> list[dict]:
+def fetch_all_prices(cur: PgCursor) -> list[dict[str, Any]]:
     """Read all price rows as dicts with float-cast decimals."""
     cur.execute(PRICES_SQL)
     cols = [d[0] for d in cur.description]
-    return [_cast_row(dict(zip(cols, row))) for row in cur.fetchall()]
+    return [_cast_row(dict(zip(cols, row, strict=True))) for row in cur.fetchall()]
 
 
-def _cast_row(row: dict) -> dict:
+def _cast_row(row: dict[str, Any]) -> dict[str, Any]:
     """Cast Decimal fields to float for transformer compatibility."""
     for key in ("original_value",):
         if row.get(key) is not None:

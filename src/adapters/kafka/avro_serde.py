@@ -2,25 +2,27 @@
 
 import json
 from pathlib import Path
+from typing import cast
 
 import fastavro
-from fastavro.schema import load_schema
 
-SCHEMAS_DIR = Path(__file__).parent.parent.parent.parent / "config" / "kafka" / "schemas"
+SCHEMAS_DIR = (
+    Path(__file__).parent.parent.parent.parent / "config" / "kafka" / "schemas"
+)
 
-_schema_cache: dict[str, dict] = {}
+_schema_cache: dict[str, dict[str, object]] = {}
 
 
-def get_schema(name: str) -> dict:
+def get_schema(name: str) -> dict[str, object]:
     """Load and cache an Avro schema by name."""
     if name not in _schema_cache:
         path = SCHEMAS_DIR / f"{name}.avsc"
-        with open(path) as f:
+        with path.open() as f:
             _schema_cache[name] = json.load(f)
     return _schema_cache[name]
 
 
-def serialize(record: dict, schema_name: str) -> bytes:
+def serialize(record: dict[str, object], schema_name: str) -> bytes:
     """Serialize a dict to Avro bytes."""
     import io
 
@@ -30,10 +32,10 @@ def serialize(record: dict, schema_name: str) -> bytes:
     return buf.getvalue()
 
 
-def deserialize(data: bytes, schema_name: str) -> dict:
+def deserialize(data: bytes, schema_name: str) -> dict[str, object]:
     """Deserialize Avro bytes to a dict."""
     import io
 
     schema = get_schema(schema_name)
     buf = io.BytesIO(data)
-    return fastavro.schemaless_reader(buf, schema)
+    return cast("dict[str, object]", fastavro.schemaless_reader(buf, schema))

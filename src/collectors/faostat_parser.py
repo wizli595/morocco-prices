@@ -1,13 +1,13 @@
-"""Parse FAOSTAT bulk CSV rows into RawObservations."""
+"""Parse FAOSTAT wide-format CSV rows into RawObservations."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Any
 
 from src.core.models.enums import CollectionMethod, Confidence, Precision
 from src.core.models.observation import RawObservation
 
 MOROCCO_CODE = "143"
 
-# FAOSTAT item codes we care about
 ITEM_CODES = {
     "977": "MEAT-SHEEP",
     "867": "MEAT-BEEF",
@@ -19,43 +19,55 @@ ITEM_CODES = {
     "27": "CEREAL-RICE-ROUND",
 }
 
-
-def is_morocco_price_row(row: dict) -> bool:
-    """Check if a CSV row is a Morocco producer price."""
-    return (
-        row.get("Area Code") == MOROCCO_CODE
-        and row.get("Item Code") in ITEM_CODES
-        and row.get("Value") not in (None, "")
-    )
+YEAR_RANGE = range(1991, 2026)
 
 
-def parse_row(row: dict) -> RawObservation:
-    """Convert one FAOSTAT CSV row to RawObservation."""
+def is_morocco_row(row: dict[str, Any]) -> bool:
+    """Check if a wide-format row is Morocco + tracked item."""
+    return row.get("Area Code") == MOROCCO_CODE and row.get("Item Code") in ITEM_CODES
+
+
+def parse_wide_row(row: dict[str, Any]) -> list[RawObservation]:
+    """Unpivot one wide row into per-year observations."""
     item_code = row["Item Code"]
     element = row.get("Element", "")
-    unit = _detect_unit(element)
+    results: list[RawObservation] = []
 
+    for year in YEAR_RANGE:
+        val_str = row.get(f"Y{year}", "")
+        if not val_str:
+            continue
+        flag = row.get(f"Y{year}F", "")
+        results.append(_build_obs(row, item_code, element, year, val_str, flag))
+
+    return results
+
+
+def _build_obs(
+    row: dict[str, Any],
+    item_code: str,
+    element: str,
+    year: int,
+    val_str: str,
+    flag: str,
+) -> RawObservation:
     return RawObservation(
         source_id="FAOSTAT",
         product_id=ITEM_CODES[item_code],
         location_id="MA-NATIONAL",
-        year=int(row["Year"]),
+        year=year,
         month=None,
         day=None,
-        value=float(row["Value"]),
+        value=float(val_str),
         value_min=None,
         value_max=None,
-        unit=unit,
+        unit=_detect_unit(element),
         currency=_detect_currency(element),
-        confidence=_detect_confidence(row.get("Flag", "")),
+        confidence=_flag_to_confidence(flag),
         precision=Precision.EXACT,
         collection_method=CollectionMethod.FILE_DOWNLOAD,
-        collected_at=datetime.now(tz=timezone.utc),
-        raw_metadata={
-            "item_code": item_code,
-            "element": element,
-            "flag": row.get("Flag", ""),
-        },
+        collected_at=datetime.now(tz=UTC),
+        raw_metadata={"item_code": item_code, "element": element, "flag": flag},
     )
 
 
@@ -75,7 +87,7 @@ def _detect_currency(element: str) -> str:
     return "index"
 
 
-def _detect_confidence(flag: str) -> Confidence:
+def _flag_to_confidence(flag: str) -> Confidence:
     if flag == "A":
         return Confidence.OFFICIAL
     if flag == "E":

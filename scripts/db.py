@@ -1,16 +1,18 @@
-"""Shared database connection for seed scripts."""
-
-import os
+"""Shared database connection for scripts, backed by application settings."""
 
 import psycopg2
+from psycopg2.extensions import connection as PgConnection
+
+from src.config import Settings
 
 
-def get_connection():
-    """Create PostgreSQL connection from env vars."""
+def get_connection() -> PgConnection:
+    """Open a PostgreSQL connection using the single source of config."""
+    settings = Settings()
     return psycopg2.connect(
-        host=os.getenv("POSTGRES_HOST", "localhost"),
-        port=int(os.getenv("POSTGRES_PORT", "5433")),
-        user=os.getenv("POSTGRES_USER", "maprix"),
-        password=os.getenv("POSTGRES_PASSWORD", "changeme"),
-        dbname=os.getenv("POSTGRES_DB", "maprix"),
+        host=settings.postgres_host,
+        port=settings.postgres_port,
+        user=settings.postgres_user,
+        password=settings.postgres_password,
+        dbname=settings.postgres_db,
     )

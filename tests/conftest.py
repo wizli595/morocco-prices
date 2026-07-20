@@ -1,6 +1,6 @@
 """Shared test fixtures for MaPrix."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -30,6 +30,6 @@ def sample_observation() -> RawObservation:
         confidence=Confidence.OFFICIAL,
         precision=Precision.EXACT,
         collection_method=CollectionMethod.API,
-        collected_at=datetime.now(tz=timezone.utc),
+        collected_at=datetime.now(tz=UTC),
         raw_metadata={"item_code": "977"},
     )

@@ -39,6 +39,8 @@ class UnsupportedConversion(MaPrixError):
     """Raised for unknown unit or currency conversion."""
 
     def __init__(self, from_val: str, to_val: str) -> None:
+        self.from_val = from_val
+        self.to_val = to_val
         super().__init__(f"No conversion: {from_val} → {to_val}")
 
 

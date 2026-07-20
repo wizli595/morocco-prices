@@ -12,9 +12,9 @@ class Settings(BaseSettings):
     project_name: str = "maprix"
     environment: str = "development"
 
-    # PostgreSQL
+    # PostgreSQL (host-side default; containers override to 5432 internally)
     postgres_host: str = "localhost"
-    postgres_port: int = 5432
+    postgres_port: int = 5434
     postgres_user: str = "maprix"
     postgres_password: str = "changeme"
     postgres_db: str = "maprix"

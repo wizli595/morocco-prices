@@ -23,17 +23,24 @@ def seed_products() -> int:
     cur = conn.cursor()
     count = 0
 
-    with open(SEED_PATH, encoding="utf-8") as f:
+    with SEED_PATH.open(encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            cur.execute(INSERT_SQL, (
-                row["product_id"], row["category"],
-                row["subcategory"], row["product_name"],
-                row["variety"] or None, row["name_en"],
-                row["name_fr"], row["name_ar"] or None,
-                row["canonical_unit"],
-                row["is_subsidized"] == "true",
-                row["is_seasonal"] == "true",
-            ))
+            cur.execute(
+                INSERT_SQL,
+                (
+                    row["product_id"],
+                    row["category"],
+                    row["subcategory"],
+                    row["product_name"],
+                    row["variety"] or None,
+                    row["name_en"],
+                    row["name_fr"],
+                    row["name_ar"] or None,
+                    row["canonical_unit"],
+                    row["is_subsidized"] == "true",
+                    row["is_seasonal"] == "true",
+                ),
+            )
             count += 1
 
     conn.commit()

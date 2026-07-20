@@ -1,6 +1,7 @@
 """World Bank API collector for CPI and inflation data."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Any
 
 import structlog
 
@@ -16,7 +17,7 @@ BASE_URL = "https://api.worldbank.org/v2/country/MAR/indicator"
 
 INDICATORS = {
     "FP.CPI.TOTL": ("CPI-NATIONAL", "index_point", "CPI 2010=100"),
-    "FP.CPI.TOTL.ZG": ("CPI-FOOD", "percent", "Inflation annual %"),
+    "FP.CPI.TOTL.ZG": ("INFLATION-NATIONAL", "percent", "Inflation annual %"),
 }
 
 
@@ -35,7 +36,7 @@ class WorldBankCollector(BaseCollector):
     def collect(self) -> list[RawObservation]:
         """Fetch all indicators for Morocco."""
         observations: list[RawObservation] = []
-        for code, (product_id, unit, desc) in INDICATORS.items():
+        for code, (product_id, unit, _desc) in INDICATORS.items():
             rows = _fetch_indicator(code)
             for row in rows:
                 obs = _parse_row(row, product_id, unit, code)
@@ -43,7 +44,8 @@ class WorldBankCollector(BaseCollector):
                     observations.append(obs)
             logger.info(
                 "collector.fetch.complete",
-                source="WORLDBANK", indicator=code,
+                source="WORLDBANK",
+                indicator=code,
                 records=len(rows),
             )
         return observations
@@ -52,7 +54,7 @@ class WorldBankCollector(BaseCollector):
         return None
 
 
-def _fetch_indicator(code: str) -> list[dict]:
+def _fetch_indicator(code: str) -> list[dict[str, Any]]:
     """Call World Bank API, return data rows."""
     url = f"{BASE_URL}/{code}"
     params = {"format": "json", "date": "1960:2025", "per_page": "200"}
@@ -63,7 +65,10 @@ def _fetch_indicator(code: str) -> list[dict]:
 
 
 def _parse_row(
-    row: dict, product_id: str, unit: str, code: str,
+    row: dict[str, Any],
+    product_id: str,
+    unit: str,
+    code: str,
 ) -> RawObservation | None:
     """Convert one API row to a RawObservation."""
     value = row.get("value")
@@ -84,6 +89,6 @@ def _parse_row(
         confidence=Confidence.INSTITUTIONAL,
         precision=Precision.EXACT,
         collection_method=CollectionMethod.API,
-        collected_at=datetime.now(tz=timezone.utc),
+        collected_at=datetime.now(tz=UTC),
         raw_metadata={"indicator": code},
     )

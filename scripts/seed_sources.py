@@ -22,14 +22,20 @@ def seed_sources() -> int:
     cur = conn.cursor()
     count = 0
 
-    with open(SEED_PATH, encoding="utf-8") as f:
+    with SEED_PATH.open(encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            cur.execute(INSERT_SQL, (
-                row["source_id"], row["source_name"],
-                row["organization"], row["source_type"],
-                row["reliability"], row["url"] or None,
-                int(row["priority_rank"]),
-            ))
+            cur.execute(
+                INSERT_SQL,
+                (
+                    row["source_id"],
+                    row["source_name"],
+                    row["organization"],
+                    row["source_type"],
+                    row["reliability"],
+                    row["url"] or None,
+                    int(row["priority_rank"]),
+                ),
+            )
             count += 1
 
     conn.commit()

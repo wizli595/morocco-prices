@@ -3,19 +3,18 @@
 import csv
 import io
 import zipfile
-from datetime import datetime, timezone
 
 import structlog
 
 from src.adapters.http.api_client import download_bytes
-from src.collectors.faostat_parser import is_morocco_price_row, parse_row
+from src.collectors.faostat_parser import is_morocco_row, parse_wide_row
 from src.core.models.observation import RawObservation
 from src.core.ports.collector import BaseCollector
 from src.core.registry import register_collector
 
 logger = structlog.get_logger()
 
-BULK_URL = "https://bulks-faostat.fao.org/production/Prices_E_All_Data_NOFLAG.zip"
+BULK_URL = "https://bulks-faostat.fao.org/production/Prices_E_All_Data.zip"
 
 
 @register_collector("faostat")
@@ -31,30 +30,29 @@ class FAOSTATCollector(BaseCollector):
         return "FAOSTAT Producer Prices"
 
     def collect(self) -> list[RawObservation]:
-        """Download, unzip, parse Morocco rows."""
+        """Download, unzip, filter Morocco, unpivot years."""
         logger.info("collector.fetch.start", source="FAOSTAT")
         raw = download_bytes(BULK_URL, timeout=300, source="FAOSTAT")
-        rows = _extract_csv_rows(raw)
-        observations = _filter_and_parse(rows)
+        observations = _extract_and_parse(raw)
         logger.info(
             "collector.fetch.complete",
-            source="FAOSTAT", records=len(observations),
+            source="FAOSTAT",
+            records=len(observations),
         )
         return observations
 
-    def check_freshness(self) -> datetime | None:
+    def check_freshness(self) -> None:
         return None
 
 
-def _extract_csv_rows(zip_bytes: bytes) -> list[dict]:
-    """Unzip and read CSV into list of dicts."""
+def _extract_and_parse(zip_bytes: bytes) -> list[RawObservation]:
+    """Unzip, read wide CSV, filter and unpivot Morocco rows."""
+    results: list[RawObservation] = []
     with zipfile.ZipFile(io.BytesIO(zip_bytes)) as zf:
-        csv_name = [n for n in zf.namelist() if n.endswith(".csv")][0]
+        csv_name = next(n for n in zf.namelist() if n.endswith(".csv"))
         with zf.open(csv_name) as f:
-            text = io.TextIOWrapper(f, encoding="utf-8")
-            return list(csv.DictReader(text))
-
-
-def _filter_and_parse(rows: list[dict]) -> list[RawObservation]:
-    """Keep only Morocco price rows and parse them."""
-    return [parse_row(r) for r in rows if is_morocco_price_row(r)]
+            reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8"))
+            for row in reader:
+                if is_morocco_row(row):
+                    results.extend(parse_wide_row(row))
+    return results

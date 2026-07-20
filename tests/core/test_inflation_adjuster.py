@@ -9,12 +9,14 @@ from src.core.transformers.inflation_adjuster import (
 
 def _load_sample_cpi():
     """Load a small CPI series for testing."""
-    load_cpi_from_rows([
-        (2010, 100.0),
-        (2015, 110.0),
-        (2017, 115.0),
-        (2020, 120.0),
-    ])
+    load_cpi_from_rows(
+        [
+            (2010, 100.0),
+            (2015, 110.0),
+            (2017, 115.0),
+            (2020, 120.0),
+        ]
+    )
 
 
 def test_adjust_to_real_same_year():

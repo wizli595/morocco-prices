@@ -1,10 +1,10 @@
 """Domain enumerations for price observations."""
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class Confidence(str, Enum):
+class Confidence(StrEnum):
     """How trustworthy is this price observation."""
 
     OFFICIAL = "official"
@@ -16,7 +16,7 @@ class Confidence(str, Enum):
 
 
 @unique
-class Precision(str, Enum):
+class Precision(StrEnum):
     """How precise is the reported value."""
 
     EXACT = "exact"
@@ -26,7 +26,7 @@ class Precision(str, Enum):
 
 
 @unique
-class CollectionMethod(str, Enum):
+class CollectionMethod(StrEnum):
     """How the data was obtained."""
 
     API = "api"
@@ -37,7 +37,7 @@ class CollectionMethod(str, Enum):
 
 
 @unique
-class PriceType(str, Enum):
+class PriceType(StrEnum):
     """What kind of price this represents."""
 
     RETAIL = "retail"
@@ -51,7 +51,7 @@ class PriceType(str, Enum):
 
 
 @unique
-class SourceReliability(str, Enum):
+class SourceReliability(StrEnum):
     """Priority ranking for conflict resolution."""
 
     OFFICIAL = "official"
@@ -63,7 +63,7 @@ class SourceReliability(str, Enum):
 
 
 @unique
-class LocationLevel(str, Enum):
+class LocationLevel(StrEnum):
     """Geographic granularity of the observation."""
 
     NATIONAL = "national"
@@ -74,7 +74,7 @@ class LocationLevel(str, Enum):
 
 
 @unique
-class TimeGrain(str, Enum):
+class TimeGrain(StrEnum):
     """Temporal granularity of the observation."""
 
     DAILY = "daily"

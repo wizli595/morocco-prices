@@ -1,7 +1,5 @@
 """Tests for the World Bank collector."""
 
-from unittest.mock import patch
-
 from src.collectors.worldbank import WorldBankCollector, _parse_row
 
 
