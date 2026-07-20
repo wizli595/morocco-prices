@@ -1,9 +1,17 @@
-# MaPrix — Morocco Price Observatory
+<p align="center">
+  <img src="docs/assets/logo.png" alt="MaPrix logo" width="200" />
+</p>
 
-![CI](https://github.com/wizli595/morocco-prices/actions/workflows/ci.yml/badge.svg)
-![Python](https://img.shields.io/badge/python-3.12%2B-blue)
-![Code](https://img.shields.io/badge/license-MIT-green)
-![Data](https://img.shields.io/badge/data-CC--BY--4.0-orange)
+<h1 align="center">MaPrix — Morocco Price Observatory</h1>
+
+<p align="center">
+  <img src="https://github.com/wizli595/morocco-prices/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://img.shields.io/badge/python-3.12%2B-blue" alt="Python 3.12+" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="Code: MIT" />
+  <img src="https://img.shields.io/badge/data-CC--BY--4.0-orange" alt="Data: CC-BY-4.0" />
+</p>
+
+![MaPrix — open price intelligence for a transparent Morocco](docs/assets/banner.png)
 
 An enterprise-grade data platform that collects, processes, and serves historical and current price data for Morocco — from a loaf of *khobz* to a head of sheep.
 
