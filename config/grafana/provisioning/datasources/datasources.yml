@@ -2,17 +2,20 @@ apiVersion: 1
 
 datasources:
   - name: Prometheus
+    uid: maprix-prometheus
     type: prometheus
     access: proxy
     url: http://prometheus:9090
     isDefault: true
 
   - name: Loki
+    uid: maprix-loki
     type: loki
     access: proxy
     url: http://loki:3100
 
   - name: PostgreSQL
+    uid: maprix-postgres
     type: postgres
     access: proxy
     url: postgres:5432

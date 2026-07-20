@@ -1,0 +1,82 @@
+{
+  "uid": "maprix-overview",
+  "title": "MaPrix — Data Overview",
+  "tags": ["maprix"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "",
+  "time": { "from": "now-1y", "to": "now" },
+  "templating": { "list": [] },
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Observations",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(*) AS value FROM serving.fact_prices" } ],
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" } } }
+    },
+    {
+      "id": 2, "type": "stat", "title": "Priced (MAD)",
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(price_mad) AS value FROM serving.fact_prices" } ]
+    },
+    {
+      "id": 3, "type": "stat", "title": "Products with data",
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(DISTINCT product_key) AS value FROM serving.fact_prices" } ]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Sources",
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(*) AS value FROM serving.dim_source" } ]
+    },
+    {
+      "id": 5, "type": "stat", "title": "Coverage span",
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT min(t.year) AS first, max(t.year) AS last FROM serving.fact_prices f JOIN serving.dim_time t ON f.time_key=t.time_key" } ]
+    },
+    {
+      "id": 6, "type": "timeseries", "title": "Meat producer prices (MAD/kg)",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 4 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "fieldConfig": { "defaults": { "unit": "none", "custom": { "lineWidth": 2, "fillOpacity": 8, "showPoints": "auto" } } },
+      "targets": [ {
+        "refId": "A", "format": "time_series",
+        "rawSql": "SELECT make_date(t.year, COALESCE(t.month,1), 1) AS time, p.product_id AS metric, f.price_mad AS value FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE p.category='Meat' AND f.price_mad IS NOT NULL ORDER BY 1"
+      } ]
+    },
+    {
+      "id": 7, "type": "timeseries", "title": "CPI & inflation (index / %)",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 4 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "fieldConfig": { "defaults": { "custom": { "lineWidth": 2, "fillOpacity": 6 } } },
+      "targets": [ {
+        "refId": "A", "format": "time_series",
+        "rawSql": "SELECT make_date(t.year,1,1) AS time, p.product_id AS metric, f.original_value AS value FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE p.product_id IN ('CPI-NATIONAL','INFLATION-NATIONAL') AND t.month IS NULL ORDER BY 1"
+      } ]
+    },
+    {
+      "id": 8, "type": "barchart", "title": "Observations by source",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 13 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "targets": [ {
+        "refId": "A", "format": "table",
+        "rawSql": "SELECT s.source_id, count(*) AS observations FROM serving.fact_prices f JOIN serving.dim_source s ON f.source_key=s.source_key GROUP BY s.source_id ORDER BY observations DESC"
+      } ]
+    },
+    {
+      "id": 9, "type": "table", "title": "Products with a price series",
+      "gridPos": { "h": 8, "w": 16, "x": 8, "y": 13 },
+      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
+      "targets": [ {
+        "refId": "A", "format": "table",
+        "rawSql": "SELECT p.product_id, p.category, count(*) AS points, min(t.year) AS first_year, max(t.year) AS last_year FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE f.price_mad IS NOT NULL GROUP BY p.product_id, p.category ORDER BY points DESC"
+      } ]
+    }
+  ]
+}
