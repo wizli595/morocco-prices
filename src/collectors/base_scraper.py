@@ -1,8 +1,4 @@
-"""Template-method base class for web-scraping collectors.
-
-The crawl loop lives here once; concrete scrapers implement only
-``targets()`` (which pages) and ``parse()`` (how to read one).
-"""
+"""Template base for scrapers: the crawl loop, written once."""
 
 from abc import abstractmethod
 from dataclasses import dataclass
@@ -19,41 +15,43 @@ logger = structlog.get_logger()
 
 @dataclass(frozen=True)
 class ScrapeTarget:
-    """One page to scrape and the product it describes."""
+    """One page to scrape; ``product_id`` is set when a page is one product."""
 
     url: str
-    product_id: str
+    product_id: str = ""
 
 
 class BaseScraper(BaseCollector):
-    """Collector that scrapes a fixed list of pages, one observation each."""
+    """Collector that scrapes a fixed list of pages into observations."""
 
     @abstractmethod
     def targets(self) -> list[ScrapeTarget]:
         """Return the pages this scraper should visit."""
 
     @abstractmethod
-    def parse(self, html: str, target: ScrapeTarget) -> RawObservation | None:
-        """Turn one page's HTML into an observation, or None if absent."""
+    def parse(self, html: str, target: ScrapeTarget) -> list[RawObservation]:
+        """Turn one page's HTML into zero or more observations."""
 
     def collect(self) -> list[RawObservation]:
         """Crawl every target politely and collect the parsed observations."""
         targets = self.targets()
-        found = [obs for t in targets if (obs := self._scrape(t))]
+        found: list[RawObservation] = []
+        for target in targets:
+            found.extend(self._scrape(target))
         logger.info(
             "scraper.complete",
             source=self.source_id,
             records=len(found),
-            attempted=len(targets),
+            pages=len(targets),
         )
         return found
 
-    def _scrape(self, target: ScrapeTarget) -> RawObservation | None:
+    def _scrape(self, target: ScrapeTarget) -> list[RawObservation]:
         try:
             html = fetch_html(target.url, source=self.source_id)
         except SourceUnavailable as exc:
             logger.warning("scraper.target.skip", url=target.url, error=str(exc))
-            return None
+            return []
         return self.parse(html, target)
 
     def check_freshness(self) -> None:

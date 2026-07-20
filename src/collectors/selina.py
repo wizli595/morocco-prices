@@ -35,5 +35,6 @@ class SelinaCollector(BaseScraper):
             for slug, product_id in PRODUCTS.items()
         ]
 
-    def parse(self, html: str, target: ScrapeTarget) -> RawObservation | None:
-        return parse_price(html, target.product_id)
+    def parse(self, html: str, target: ScrapeTarget) -> list[RawObservation]:
+        obs = parse_price(html, target.product_id)
+        return [obs] if obs else []

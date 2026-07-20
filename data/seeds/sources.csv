@@ -10,3 +10,4 @@ LE360,Le360 Price Articles,Le360,scrape,journalistic,https://fr.le360.ma,fr,irre
 SELINA,Selina Wamucii Trade Prices,Selina Wamucii,scrape,commercial,https://www.selinawamucii.com,en,annual,5
 MANUAL,Historical Archives,Multiple,manual,academic,,fr,once,7
 BAM,Bank Al-Maghrib Statistics,Bank Al-Maghrib,bulk_file,official,https://www.bkam.ma,fr,quarterly,1
+NUMBEO,Numbeo Cost of Living,Numbeo,scrape,anecdotal,https://www.numbeo.com,en,monthly,8
