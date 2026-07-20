@@ -1,82 +1,338 @@
 {
   "uid": "maprix-overview",
-  "title": "MaPrix — Data Overview",
-  "tags": ["maprix"],
+  "title": "MaPrix \u2014 Data Overview",
+  "tags": [
+    "maprix"
+  ],
   "timezone": "browser",
   "schemaVersion": 39,
   "version": 1,
   "refresh": "",
-  "time": { "from": "now-1y", "to": "now" },
-  "templating": { "list": [] },
+  "time": {
+    "from": "now-1y",
+    "to": "now"
+  },
+  "templating": {
+    "list": []
+  },
   "panels": [
     {
-      "id": 1, "type": "stat", "title": "Observations",
-      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(*) AS value FROM serving.fact_prices" } ],
-      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" } } }
+      "id": 1,
+      "type": "stat",
+      "title": "Observations",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT count(*) AS value FROM serving.fact_prices"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        }
+      }
     },
     {
-      "id": 2, "type": "stat", "title": "Priced (MAD)",
-      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(price_mad) AS value FROM serving.fact_prices" } ]
+      "id": 2,
+      "type": "stat",
+      "title": "Priced (MAD)",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT count(price_mad) AS value FROM serving.fact_prices"
+        }
+      ]
     },
     {
-      "id": 3, "type": "stat", "title": "Products with data",
-      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(DISTINCT product_key) AS value FROM serving.fact_prices" } ]
+      "id": 3,
+      "type": "stat",
+      "title": "Products with data",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT count(DISTINCT product_key) AS value FROM serving.fact_prices"
+        }
+      ]
     },
     {
-      "id": 4, "type": "stat", "title": "Sources",
-      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT count(*) AS value FROM serving.dim_source" } ]
+      "id": 4,
+      "type": "stat",
+      "title": "Sources",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT count(*) AS value FROM serving.dim_source"
+        }
+      ]
     },
     {
-      "id": 5, "type": "stat", "title": "Coverage span",
-      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "targets": [ { "refId": "A", "format": "table", "rawSql": "SELECT min(t.year) AS first, max(t.year) AS last FROM serving.fact_prices f JOIN serving.dim_time t ON f.time_key=t.time_key" } ]
+      "id": 5,
+      "type": "stat",
+      "title": "Coverage span",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT min(t.year) AS first, max(t.year) AS last FROM serving.fact_prices f JOIN serving.dim_time t ON f.time_key=t.time_key"
+        }
+      ]
     },
     {
-      "id": 6, "type": "timeseries", "title": "Meat producer prices (MAD/kg)",
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 4 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "fieldConfig": { "defaults": { "unit": "none", "custom": { "lineWidth": 2, "fillOpacity": 8, "showPoints": "auto" } } },
-      "targets": [ {
-        "refId": "A", "format": "time_series",
-        "rawSql": "SELECT make_date(t.year, COALESCE(t.month,1), 1) AS time, p.product_id AS metric, f.price_mad AS value FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE p.category='Meat' AND f.price_mad IS NOT NULL ORDER BY 1"
-      } ]
+      "id": 6,
+      "type": "timeseries",
+      "title": "Meat producer prices (MAD/kg)",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto"
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawSql": "SELECT make_date(t.year, COALESCE(t.month,1), 1) AS time, p.product_id AS metric, f.price_mad AS value FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE p.category='Meat' AND f.price_mad IS NOT NULL ORDER BY 1"
+        }
+      ]
     },
     {
-      "id": 7, "type": "timeseries", "title": "CPI & inflation (index / %)",
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 4 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "fieldConfig": { "defaults": { "custom": { "lineWidth": 2, "fillOpacity": 6 } } },
-      "targets": [ {
-        "refId": "A", "format": "time_series",
-        "rawSql": "SELECT make_date(t.year,1,1) AS time, p.product_id AS metric, f.original_value AS value FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE p.product_id IN ('CPI-NATIONAL','INFLATION-NATIONAL') AND t.month IS NULL ORDER BY 1"
-      } ]
+      "id": 7,
+      "type": "timeseries",
+      "title": "CPI & inflation (index / %)",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 6
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawSql": "SELECT make_date(t.year,1,1) AS time, p.product_id AS metric, f.original_value AS value FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE p.product_id IN ('CPI-NATIONAL','INFLATION-NATIONAL') AND t.month IS NULL ORDER BY 1"
+        }
+      ]
     },
     {
-      "id": 8, "type": "barchart", "title": "Observations by source",
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 13 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "targets": [ {
-        "refId": "A", "format": "table",
-        "rawSql": "SELECT s.source_id, count(*) AS observations FROM serving.fact_prices f JOIN serving.dim_source s ON f.source_key=s.source_key GROUP BY s.source_id ORDER BY observations DESC"
-      } ]
+      "id": 8,
+      "type": "barchart",
+      "title": "Observations by source",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 13
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT s.source_id, count(*) AS observations FROM serving.fact_prices f JOIN serving.dim_source s ON f.source_key=s.source_key GROUP BY s.source_id ORDER BY observations DESC"
+        }
+      ]
     },
     {
-      "id": 9, "type": "table", "title": "Products with a price series",
-      "gridPos": { "h": 8, "w": 16, "x": 8, "y": 13 },
-      "datasource": { "type": "postgres", "uid": "maprix-postgres" },
-      "targets": [ {
-        "refId": "A", "format": "table",
-        "rawSql": "SELECT p.product_id, p.category, count(*) AS points, min(t.year) AS first_year, max(t.year) AS last_year FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE f.price_mad IS NOT NULL GROUP BY p.product_id, p.category ORDER BY points DESC"
-      } ]
+      "id": 9,
+      "type": "table",
+      "title": "Products with a price series",
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 13
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT p.product_id, p.category, count(*) AS points, min(t.year) AS first_year, max(t.year) AS last_year FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE f.price_mad IS NOT NULL GROUP BY p.product_id, p.category ORDER BY points DESC"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Beef: official vs live price (MAD/kg)",
+      "gridPos": {
+        "h": 9,
+        "w": 14,
+        "x": 0,
+        "y": 21
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 6,
+            "showPoints": "always",
+            "pointSize": 7
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawSql": "SELECT make_date(t.year, COALESCE(t.month,1),1) AS time, s.source_id AS metric, f.price_mad AS value FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_source s ON f.source_key=s.source_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE p.product_id='MEAT-BEEF' AND f.price_mad IS NOT NULL ORDER BY 1"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "table",
+      "title": "Current gap: official vs live (%)",
+      "gridPos": {
+        "h": 9,
+        "w": 10,
+        "x": 14,
+        "y": 21
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "maprix-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "gap_pct"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "value": null,
+                      "color": "green"
+                    },
+                    {
+                      "value": 10,
+                      "color": "yellow"
+                    },
+                    {
+                      "value": 25,
+                      "color": "red"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "WITH latest AS (SELECT p.product_id, (s.source_id IN ('NUMBEO','SELINA')) AS is_live, f.price_mad, row_number() OVER (PARTITION BY p.product_id, (s.source_id IN ('NUMBEO','SELINA')) ORDER BY t.year DESC, t.month DESC NULLS LAST) rn FROM serving.fact_prices f JOIN serving.dim_product p ON f.product_key=p.product_key JOIN serving.dim_source s ON f.source_key=s.source_key JOIN serving.dim_time t ON f.time_key=t.time_key WHERE f.price_mad IS NOT NULL) SELECT o.product_id, round(o.price_mad,1) AS official_mad, round(l.price_mad,1) AS live_mad, round((l.price_mad-o.price_mad)/o.price_mad*100,1) AS gap_pct FROM (SELECT * FROM latest WHERE NOT is_live AND rn=1) o JOIN (SELECT * FROM latest WHERE is_live AND rn=1) l USING (product_id) ORDER BY gap_pct DESC"
+        }
+      ]
     }
   ]
 }
