@@ -198,8 +198,19 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://maprix:${POSTGRES_PASSWORD:-changeme}@postgres:5432/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      # Make the MaPrix code importable and give tasks the app's DB config
+      PYTHONPATH: /opt/maprix
+      _PIP_ADDITIONAL_REQUIREMENTS: "httpx psycopg2-binary structlog pydantic pydantic-settings python-dotenv"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: maprix
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: maprix
     volumes:
       - ./config/airflow/dags:/opt/airflow/dags
+      - ./src:/opt/maprix/src
+      - ./scripts:/opt/maprix/scripts
+      - ./data:/opt/maprix/data
     networks:
       - maprix
 
