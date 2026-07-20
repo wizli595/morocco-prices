@@ -21,7 +21,7 @@ jobs:
           pip install ruff mypy pytest pytest-cov \
             httpx fastavro psycopg2-binary structlog \
             pydantic pydantic-settings python-dateutil \
-            fastapi uvicorn
+            fastapi uvicorn selectolax
 
       - name: Ruff lint
         run: ruff check .
