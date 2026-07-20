@@ -200,7 +200,7 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       # Make the MaPrix code importable and give tasks the app's DB config
       PYTHONPATH: /opt/maprix
-      _PIP_ADDITIONAL_REQUIREMENTS: "httpx psycopg2-binary structlog pydantic pydantic-settings python-dotenv"
+      _PIP_ADDITIONAL_REQUIREMENTS: "httpx psycopg2-binary structlog pydantic pydantic-settings python-dotenv selectolax"
       POSTGRES_HOST: postgres
       POSTGRES_PORT: "5432"
       POSTGRES_USER: maprix

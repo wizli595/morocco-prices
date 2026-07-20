@@ -5,9 +5,7 @@ from typing import Any
 from src.core.models.enums import CollectionMethod, Confidence, Precision
 
 INDEX_UNITS = {"index_point", "percent"}
-ALLOWED_UNITS = {
-    "MAD/kg", "MAD/tonne", "USD/kg", "USD/tonne", "index_point", "percent"
-}
+ALLOWED_UNITS = {"MAD/kg", "MAD/tonne", "USD/kg", "USD/tonne", "index_point", "percent"}
 ALLOWED_CURRENCIES = {"MAD", "USD", "index"}
 CONFIDENCES = {c.value for c in Confidence}
 PRECISIONS = {p.value for p in Precision}
